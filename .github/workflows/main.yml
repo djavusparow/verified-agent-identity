@@ -1,4 +1,4 @@
-name: Verify Agent
+name: Verify Human Identity
 
 on:
   workflow_dispatch:
@@ -8,16 +8,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install Node
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
+
+      - name: Install ClawHub skill
+        run: npx clawhub@latest install verified-agent-identity
 
       - name: Install dependencies
         run: npm install
 
-      - name: Create identity
+      - name: Create Ethereum Identity
         run: node scripts/createNewEthereumIdentity.js
+
+      - name: Show generated files
+        run: ls -R ~/.openclaw
